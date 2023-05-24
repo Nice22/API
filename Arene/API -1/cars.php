@@ -3,27 +3,18 @@
 include("connect.php");
 $request_method = $_SERVER["REQUEST_METHOD"];
 
-function getCars()
+function getCars($order_by)
 {
     global $conn;
-    $query = "SELECT * FROM cars ORDER BY car_name";
+    $query = "SELECT car.*, modele.name AS modele_name, marque.name AS marque_name 
+              FROM car 
+              LEFT JOIN modele ON car.modele_id = modele.id 
+              LEFT JOIN marque ON car.marque_id = marque.id 
+              ORDER BY $order_by";
     $response = array();
     $result = mysqli_query($conn, $query);
     while ($row = mysqli_fetch_assoc($result)) {
         $response[] = $row;
-    }
-    header('Content-Type: application/json');
-    echo json_encode($response, JSON_PRETTY_PRINT);
-}
-
-function getCar($id)
-{
-    global $conn;
-    $query = "SELECT * FROM cars WHERE id = $id";
-    $response = array();
-    $result = mysqli_query($conn, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        $response = $row;
     }
     header('Content-Type: application/json');
     echo json_encode($response, JSON_PRETTY_PRINT);
@@ -41,15 +32,13 @@ function addCar()
     $color = $data["color"];
     $year = $data["year"];
 
-    $query = "INSERT INTO cars (car_name, modele_id, marque_id, designation, price, color, year) 
+    $query = "INSERT INTO car (car_name, modele_id, marque_id, designation, price, color, year) 
               VALUES ('$car_name', '$modele_id', '$marque_id', '$designation', '$price', '$color', '$year')";
 
     if (mysqli_query($conn, $query)) {
-        $car_id = mysqli_insert_id($conn);
         $response = array(
             'status' => 1,
-            'status_message' => 'Car added successfully.',
-            'car_id' => $car_id
+            'status_message' => 'Car added successfully.'
         );
     } else {
         $response = array(
@@ -73,7 +62,7 @@ function updateCar($id)
     $color = $data["color"];
     $year = $data["year"];
 
-    $query = "UPDATE cars SET 
+    $query = "UPDATE car SET 
               car_name = '$car_name', 
               modele_id = '$modele_id', 
               marque_id = '$marque_id', 
@@ -101,7 +90,8 @@ function updateCar($id)
 function deleteCar($id)
 {
     global $conn;
-    $query = "DELETE FROM cars WHERE id = $id";
+    $query = "DELETE FROM car WHERE id = $id";
+
     if (mysqli_query($conn, $query)) {
         $response = array(
             'status' => 1,
@@ -118,13 +108,14 @@ function deleteCar($id)
 }
 
 switch ($request_method) {
+
     case 'GET':
         // Retrieve Cars
-        if (!empty($_GET["id"])) {
-            $id = intval($_GET["id"]);
-            getCar($id);
+        if (!empty($_GET["order_by"])) {
+            $order_by = $_GET["order_by"];
+            getCars($order_by);
         } else {
-            getCars();
+            getCars("car_name"); // Par défaut, triez par le nom de la voiture
         }
         break;
 
