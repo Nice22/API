@@ -46,7 +46,8 @@
 		$brand = $_POST["brand"];
 		$created = date('Y-m-d H:i:s');
 		//$modified = date('Y-m-d H:i:s');
-		echo $query="INSERT INTO produit(name, licensePlate, color, category_id, year, brand, created) VALUES('".$type."', '".$licensePlate."', '".$color."', '".$category."','".$year."','".$brand."', '".$created."')"; // , modified, '".$modified."'
+		$query = "INSERT INTO car (type, licensePlate, color, category_id, year, brand, created) VALUES ('$type', '$licensePlate', '$color', '$category', '$year', '$brand', '$created')";
+
 		if(mysqli_query($conn, $query))
 		{
 			$response=array(
@@ -70,15 +71,17 @@
 		global $conn;
 		$_PUT = array();
 		parse_str(file_get_contents('php://input'), $_PUT);
-		$type = $_POST["type"];
-		$licensePlate = $_POST["licensePlate"];
-		$color = $_POST["color"];
-		$category = $_POST["category"];
-		$year = $_POST["year"];
-		$brand = $_POST["brand"];
+		$type = $_PUT["type"];
+		$licensePlate = $_PUT["licensePlate"];
+		$color = $_PUT["color"];
+		$category = $_PUT["category"];
+		$year = $_PUT["year"];
+		$brand = $_PUT["brand"];
+		
 		$created = 'NULL';
 		//$modified = date('Y-m-d H:i:s');
-		$query="UPDATE produit SET type='".$type."', licensePlate='".$licensePlate."', color='".$color."', category_id='".$category."',year='".$year."',brand='".$brand."' WHERE id=".$id; //, modified='".$modified."'
+		$query = "UPDATE car SET type='$type', licensePlate='$licensePlate', color='$color', category_id='$category', year='$year', brand='$brand' WHERE id=$id";
+
 		
 		if(mysqli_query($conn, $query))
 		{
@@ -115,7 +118,7 @@
 		{
 			$response=array(
 				'status' => 0,
-				'status_message' =>'Failed to delete car. '. mysqli_error($conn)
+				'status_message' =>"Une erreur s'est produite lors de l'exécution de la requête.". mysqli_error($conn)
 			);
 		}
 		header('Content-Type: application/json');
