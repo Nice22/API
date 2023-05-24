@@ -24,16 +24,16 @@ function addCar()
 {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
-    $car_name = $data["car_name"];
     $modele_id = $data["modele_id"];
     $marque_id = $data["marque_id"];
     $designation = $data["designation"];
     $price = $data["price"];
     $color = $data["color"];
     $year = $data["year"];
+	$car_name = $data["car_name"];
 
-    $query = "INSERT INTO car (car_name, modele_id, marque_id, designation, price, color, year) 
-              VALUES ('$car_name', '$modele_id', '$marque_id', '$designation', '$price', '$color', '$year')";
+    $query = "INSERT INTO car (modele_id, marque_id, designation, price, color, year, car_name) 
+              VALUES ('$modele_id', '$marque_id', '$designation', '$price', '$color', '$year', '$car_name')";
 
     if (mysqli_query($conn, $query)) {
         $response = array(
@@ -54,22 +54,22 @@ function updateCar($id)
 {
     global $conn;
     $data = json_decode(file_get_contents('php://input'), true);
-    $car_name = $data["car_name"];
     $modele_id = $data["modele_id"];
     $marque_id = $data["marque_id"];
     $designation = $data["designation"];
     $price = $data["price"];
     $color = $data["color"];
     $year = $data["year"];
+	$car_name = $data["car_name"];
 
     $query = "UPDATE car SET 
-              car_name = '$car_name', 
               modele_id = '$modele_id', 
               marque_id = '$marque_id', 
               designation = '$designation', 
               price = '$price', 
               color = '$color', 
-              year = '$year' 
+              year = '$year',
+			  car_name = '$car_name' 
               WHERE id = $id";
 
     if (mysqli_query($conn, $query)) {
