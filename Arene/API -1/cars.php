@@ -8,8 +8,8 @@ function getCars($order_by)
     global $conn;
     $query = "SELECT car.*, modele.name AS modele_name, marque.name AS marque_name 
               FROM cars 
-              LEFT JOIN modele ON car.modele_id = modele.id 
-              LEFT JOIN marque ON car.marque_id = marque.id 
+              LEFT JOIN modele ON cars.modele_id = modele.id 
+              LEFT JOIN marque ON cars.marque_id = marque.id 
               ORDER BY $order_by";
     $response = array();
     $result = mysqli_query($conn, $query);
