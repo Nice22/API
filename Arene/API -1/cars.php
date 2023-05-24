@@ -7,7 +7,7 @@ function getCars($order_by)
 {
     global $conn;
     $query = "SELECT car.*, modele.name AS modele_name, marque.name AS marque_name 
-              FROM car 
+              FROM cars 
               LEFT JOIN modele ON car.modele_id = modele.id 
               LEFT JOIN marque ON car.marque_id = marque.id 
               ORDER BY $order_by";
@@ -30,10 +30,9 @@ function addCar()
     $price = $data["price"];
     $color = $data["color"];
     $year = $data["year"];
-	$car_name = $data["car_name"];
 
-    $query = "INSERT INTO car (modele_id, marque_id, designation, price, color, year, car_name) 
-              VALUES ('$modele_id', '$marque_id', '$designation', '$price', '$color', '$year', '$car_name')";
+    $query = "INSERT INTO cars (modele_id, marque_id, designation, price, color, year) 
+              VALUES ('$modele_id', '$marque_id', '$designation', '$price', '$color', '$year')";
 
     if (mysqli_query($conn, $query)) {
         $response = array(
@@ -60,16 +59,14 @@ function updateCar($id)
     $price = $data["price"];
     $color = $data["color"];
     $year = $data["year"];
-	$car_name = $data["car_name"];
 
-    $query = "UPDATE car SET 
+    $query = "UPDATE cars SET 
               modele_id = '$modele_id', 
               marque_id = '$marque_id', 
               designation = '$designation', 
               price = '$price', 
               color = '$color', 
-              year = '$year',
-			  car_name = '$car_name' 
+              year = '$year' 
               WHERE id = $id";
 
     if (mysqli_query($conn, $query)) {
@@ -90,7 +87,7 @@ function updateCar($id)
 function deleteCar($id)
 {
     global $conn;
-    $query = "DELETE FROM car WHERE id = $id";
+    $query = "DELETE FROM cars WHERE id = $id";
 
     if (mysqli_query($conn, $query)) {
         $response = array(
