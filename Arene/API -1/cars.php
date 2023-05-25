@@ -10,7 +10,7 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 function getCars($order_by)
 {
     global $conn;
-    $query = "SELECT cars.*, modele.name AS modele_name, marque.name AS marque_name 
+    $query = "SELECT cars.*, CONCAT(cars.year, ' ', modele.name, ' ', marque.name) AS car_name
               FROM cars 
               LEFT JOIN modele ON cars.modele_id = modele.id 
               LEFT JOIN marque ON cars.marque_id = marque.id 
