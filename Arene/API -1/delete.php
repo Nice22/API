@@ -1,5 +1,8 @@
 <?php
-$url = "http://localhost/API/Arene/API-1/cars.php?id=1"; // Supprimer le produit avec l'ID 1
+$url = "http://localhost/API/Arene/API-1/cars.php"; // URL de l'API
+$id = 1; // ID du produit à supprimer
+
+$url .= "?id=" . $id; // Ajoute l'ID à l'URL
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -8,12 +11,11 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 
-var_dump($response);
-
-if (!$response) {
-    return false;
+if ($response === false) {
+    echo "Erreur de requête : " . curl_error($ch);
+} else {
+    echo "Réponse : " . $response;
 }
 
 curl_close($ch);
-
 ?>
