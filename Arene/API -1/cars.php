@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Connect to database
 include("connect.php");
 $request_method = $_SERVER["REQUEST_METHOD"];
@@ -6,7 +10,7 @@ $request_method = $_SERVER["REQUEST_METHOD"];
 function getCars($order_by)
 {
     global $conn;
-    $query = "SELECT car.*, modele.name AS modele_name, marque.name AS marque_name 
+    $query = "SELECT cars.*, modele.name AS modele_name, marque.name AS marque_name 
               FROM cars 
               LEFT JOIN modele ON cars.modele_id = modele.id 
               LEFT JOIN marque ON cars.marque_id = marque.id 
