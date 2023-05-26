@@ -1,8 +1,8 @@
 <?php
 $server = "db4free.net";
-$username = "root";
+$username = "garage";
 $password = "devarenetest1";
-$db = "garage";
+$db = "garagessai";
 $conn = mysqli_connect($server, $username, $password, $db);
 
 // Vérifier la connexion
