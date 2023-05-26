@@ -1,7 +1,7 @@
 <?php
-$server = "localhost";
+$server = "db4free.net";
 $username = "root";
-$password = "";
+$password = "devarenetest1";
 $db = "garage";
 $conn = mysqli_connect($server, $username, $password, $db);
 
